@@ -22,6 +22,8 @@ Welcome to the **NGL Spammer!** This is a simple script that sends questions to 
 
 Make sure you have **Node.js** and **npm** installed on your computer.
 
+---
+
 ### Steps to Set Up
 
 1. **Clone the repo:**
@@ -135,11 +137,3 @@ This project is maintained by [JrDev06](https://www.facebook.com/profile.php?id=
 ### Thank You for Checking Out NGL Spammer!
 
 We hope you enjoy using this script! If you have any questions, feel free to contact the owner.
-```
-
-### Instructions for Use
-1. Create a file named `README.md` in the root directory of your GitHub repository.
-2. Copy the above content and paste it into the `README.md` file.
-3. Make sure to have the image file named `logo.png` in the same directory.
-
-This README provides a comprehensive overview of your project, making it easy for others to understand and use.
