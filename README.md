@@ -2,7 +2,7 @@
 
 # NGL Spammer
 
-![NGL Spammer Logo](https://imgur.com/a/78LwYpF)
+![NGL Spammer Logo](https://ibb.co/1bxMX2W)
 
 Welcome to the **NGL Spammer!** This is a simple script that sends questions to the NGL API quickly and logs the responses in real-time. Let’s dive in!
 
