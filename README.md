@@ -1,7 +1,7 @@
 
 # NGL Spammer
 
-![NGL Spammer Logo](images (15).jpeg)
+![NGL Spammer Logo](logo.jpeg)
 
 Welcome to the **NGL Spammer!** This is a simple script that sends questions to the NGL API quickly and logs the responses in real-time. Let’s dive in!
 
