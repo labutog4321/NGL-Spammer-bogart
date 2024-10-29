@@ -1,4 +1,6 @@
 const express = require('express');
+const http = require('http');
+const socketIo = require('socket.io');
 const axios = require('axios');
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
@@ -7,7 +9,11 @@ const config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
 const intervalMs = config.interval * 1000;
 
 const app = express();
+const server = http.createServer(app);
+const io = socketIo(server);
 const PORT = process.env.PORT || 3000;
+
+app.use(express.static('public'));
 
 const userAgents = [
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36',
@@ -20,6 +26,9 @@ const userAgents = [
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36',
     'Mozilla/5.0 (Linux; U; Android 8.0.0; en-us; SM-G935F Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/62.0.3202.84 Mobile Safari/537.36'
 ];
+
+let successCount = 0;
+let failureCount = 0;
 
 const sendPostRequest = async (username, question) => {
     const deviceId = uuidv4();
@@ -41,21 +50,36 @@ const sendPostRequest = async (username, question) => {
             headers,
             timeout: 10000
         });
-        console.log('Response:', response.data);
+        successCount++;
+        const logMessage = `Success: Received response for question "${question}". Response Data: ${JSON.stringify(response.data)}`;
+        console.log(logMessage);
+        io.emit('log', logMessage);
+        io.emit('updateCounts', { successCount, failureCount });
     } catch (error) {
-        console.error('Request failed:', error.message);
+        failureCount++;
+        const errorMessage = `Failed: Request failed for question "${question}". Error: ${error.message}`;
+        console.error(errorMessage);
+        io.emit('log', errorMessage);
+        io.emit('updateCounts', { successCount, failureCount });
     }
 };
 
+io.on('connection', (socket) => {
+    console.log('A client connected for real-time logging');
+});
+
 app.get('/', (req, res) => {
+    const logMessage = `Request received at / from IP: ${req.ip} at ${new Date().toLocaleString()}`;
+    console.log(logMessage);
+    io.emit('log', logMessage);
     res.send('Server is running and active');
 });
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
 setInterval(() => {
-    const randomQuestion = config.questions[Math.floor(Math.random() * config.questions.length)];  
-    sendPostRequest(config.username, randomQuestion); 
+    const randomQuestion = config.questions[Math.floor(Math.random() * config.questions.length)];
+    sendPostRequest(config.username, randomQuestion);
 }, intervalMs);
