@@ -1,6 +1,4 @@
-Here's the complete `README.md` file for your NGL Spammer project:
 
-```markdown
 # NGL Spammer
 
 ![NGL Spammer Logo](logo.png)
