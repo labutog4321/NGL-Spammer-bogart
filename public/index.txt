@@ -192,7 +192,7 @@
                 }
             } else if (message.startsWith('Failed')) {
                 logItem.className = 'failure';
-                logItem.innerHTML = `<div class="log-status">Failed: ${message}</div>`;
+                logItem.innerHTML = `<div class="log-status">${message}</div>`;
             }
 
             logsList.appendChild(logItem);
